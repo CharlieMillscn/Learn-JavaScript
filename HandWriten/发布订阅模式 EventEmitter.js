@@ -34,7 +34,7 @@ class EventEmitter {
 let em = new EventEmitter();
 
 function workDay() {
-  console.log("每天工作");
+  console.log("每天工作！");
 }
 function makeMoney() {
   console.log("赚100万");
