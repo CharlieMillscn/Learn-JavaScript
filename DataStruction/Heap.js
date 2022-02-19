@@ -1,86 +1,70 @@
-const MedianFinder = function () {
-  // 默认最大堆
-  const defaultCmp = (x, y) => x > y;
-  // 交换元素
-  const swap = (arr, i, j) => ([arr[i], arr[j]] = [arr[j], arr[i]]);
-  // 堆类，默认最大堆
-  class Heap {
-    constructor(cmp = defaultCmp) {
-      this.container = [];
-      this.cmp = cmp;
-    }
-    // 插入
-    insert(data) {
-      const { container, cmp } = this;
-      container.push(data);
-      let index = this.size() - 1;
-      while (index) {
-        let parent = (index - 1) >> 1;
-        if (!cmp(container[index], container[parent])) {
-          return;
-        }
-        swap(container, index, parent);
-        index = parent;
-      }
-    }
-    // 弹出堆顶，并返回
-    pop() {
-      const { container, cmp } = this;
-      if (!this.size()) {
-        return null;
-      }
-      swap(container, 0, this.size() - 1);
-      const res = container.pop();
-      const length = this.size();
-      let index = 0,
-        exchange = index * 2 + 1;
-      while (exchange < length) {
-        // // 以最大堆的情况来说：如果有右节点，并且右节点的值大于左节点的值
-        let right = index * 2 + 2;
-        if (right < length && cmp(container[right], container[exchange])) {
-          exchange = right;
-        }
-        if (!cmp(container[exchange], container[index])) {
-          break;
-        }
-        swap(container, exchange, index);
-        index = exchange;
-        exchange = index * 2 + 1;
-      }
-      return res;
-    }
-    // 获取堆大小
-    size() {
-      return this.container.length;
-    }
-    // 获取堆顶
-    peek() {
-      if (this.size()) return this.container[0];
-      return null;
-    }
-  }
-  // 最大堆
-  this.A = new Heap();
-  // 最小堆
-  this.B = new Heap((x, y) => x < y);
-};
-MedianFinder.prototype.addNum = function (num) {
-  if (this.A.size() !== this.B.size()) {
-    // 当N为奇数，需要向B添加一个元素
-    // 先将num插入A，再将A堆顶弹出，插入B
-    this.A.insert(num);
-    this.B.insert(this.A.pop());
-  } else {
-    // 当N为偶数，需要向A添加一个元素
-    // 先将num插入B，再将B堆顶弹出，插入A
-    this.B.insert(num);
-    this.A.insert(this.B.pop());
+// 创建小顶堆
+const priorityQueue = new PriorityQueue((a, b) => a - b);
+
+function PriorityQueue(compareFn) {
+  this.compareFn = compareFn;
+  this.queue = [];
+}
+
+// 添加
+PriorityQueue.prototype.push = function (item) {
+  this.queue.push(item);
+  let index = this.queue.length - 1;
+  let parent = Math.floor((index - 1) / 2);
+  // 上浮
+  while (parent >= 0 && this.compare(parent, index) > 0) {
+    // 交换
+    [this.queue[index], this.queue[parent]] = [
+      this.queue[parent],
+      this.queue[index],
+    ];
+    index = parent;
+    parent = Math.floor((index - 1) / 2);
   }
 };
-MedianFinder.prototype.findMedian = function () {
-  // 若总和为偶数，返回两个堆顶的平均数
-  // 若总和为奇数，返回A的堆顶
-  return this.A.container.length === this.B.container.length
-    ? (this.A.peek() + this.B.peek()) / 2
-    : this.A.peek();
+
+// 获取堆顶元素并移除
+PriorityQueue.prototype.pop = function () {
+  const ret = this.queue[0];
+
+  // 把最后一个节点移到堆顶
+  this.queue[0] = this.queue.pop();
+
+  let index = 0;
+  // 左子节点下标，left + 1 就是右子节点下标
+  let left = 1;
+  let selectedChild = this.compare(left, left + 1) > 0 ? left + 1 : left;
+
+  // 下沉
+  while (
+    selectedChild !== undefined &&
+    this.compare(index, selectedChild) > 0
+  ) {
+    // 交换
+    [this.queue[index], this.queue[selectedChild]] = [
+      this.queue[selectedChild],
+      this.queue[index],
+    ];
+    index = selectedChild;
+    left = 2 * index + 1;
+    selectedChild = this.compare(left, left + 1) > 0 ? left + 1 : left;
+  }
+
+  return ret;
+};
+
+PriorityQueue.prototype.size = function () {
+  return this.queue.length;
+};
+
+// 使用传入的 compareFn 比较两个位置的元素
+PriorityQueue.prototype.compare = function (index1, index2) {
+  if (this.queue[index1] === undefined) {
+    return 1;
+  }
+  if (this.queue[index2] === undefined) {
+    return -1;
+  }
+
+  return this.compareFn(this.queue[index1], this.queue[index2]);
 };
