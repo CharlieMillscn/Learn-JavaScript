@@ -9,3 +9,8 @@ const sleep = (time) => {
 sleep(1000).then(() => {
   console.log(12561);
 });
+// new Promise((resolve) => {
+//   setTimeout(resolve, 2000);
+// }).then(() => {
+//   console.log(1515631221);
+// });
