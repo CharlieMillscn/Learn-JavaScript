@@ -1,0 +1,62 @@
+<div style="height: 1000px; background-color: aquamarine"></div>
+<img
+  src=""
+  data-src="https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/5c/a3/6c/5ca36cb0-aba2-1195-f0a8-9d6351128d23/source/2048x2048bb.jpg"
+/>
+<script>
+  function isVisible(el) {
+    const position = el.getBoundingClientRect();
+    // 布局视口高度
+    const windowHeight = document.documentElement.clientHeight;
+    // 顶部边缘可见
+    const topVisible = position.top > 0 && position.top < windowHeight;
+    // 底部边缘可见
+    const bottomVisible = position.bottom < windowHeight && position.bottom > 0;
+    return topVisible || bottomVisible;
+  }
+
+  function lazyload() {
+    let viewHeight = document.body.clientHeight; //获取可视区高度
+    let imgs = document.querySelectorAll("img[data-src]");
+    imgs.forEach((item, index) => {
+      if (item.dataset.src === "") return;
+
+      // 用于获得页面中某个元素的左，上，右和下分别相对浏览器视窗的位置
+      let rect = item.getBoundingClientRect();
+      if (rect.bottom >= 0 && rect.top < viewHeight) {
+        console.log(rect);
+        item.src = item.dataset.src;
+        item.removeAttribute("data-src");
+      }
+    });
+  }
+
+  function throttle(fn, delay) {
+    let timer;
+    let prevTime;
+    return function (...args) {
+      const currTime = Date.now();
+      const context = this;
+      if (!prevTime) prevTime = currTime;
+      clearTimeout(timer);
+
+      if (currTime - prevTime > delay) {
+        prevTime = currTime;
+        fn.apply(context, args);
+        clearTimeout(timer);
+        return;
+      }
+
+      timer = setTimeout(function () {
+        prevTime = Date.now();
+        timer = null;
+        fn.apply(context, args);
+      }, delay);
+    };
+  }
+
+  // 测试
+  window.addEventListener("scroll", throttle(lazyload, 200));
+  // or
+  // window.addEventListener("scroll", throttle(imageLazyLoad, 1000));
+</script>

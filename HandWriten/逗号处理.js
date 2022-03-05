@@ -12,7 +12,7 @@ const toThousands = (num = 0) => {
   return result + decmial;
 };
 
-console.log(toThousands(1234567890)); //1,234,567,890.111
+// console.log(toThousands(1234567890)); //1,234,567,890.111
 
 function toThousands1(num = 0) {
   let result = "";
@@ -29,4 +29,13 @@ function toThousands1(num = 0) {
   return result + decmial;
 }
 
-console.log(toThousands1(7890.111));
+// console.log(toThousands1(7890.111));
+
+function parseToMoney(num) {
+  num = parseFloat(num.toFixed(3));
+  let [integer, decimal] = String.prototype.split.call(num, ".");
+  integer = integer.replace(/\d(?=(\d{3})+$)/g, "$&,");
+  return integer + "." + (decimal ? decimal : "");
+}
+
+console.log(parseToMoney(1534156217890.123111));

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .cont {
+        border: 1px dashed #666;
+        padding: 20px;
+        /* overflow: hidden; */
+      }
+      .head {
+        width: 150px;
+        height: 150px;
+        background: #eee;
+        border-radius: 8px;
+        float: left;
+      }
+      .head img {
+        display: block;
+        width: 100%;
+      }
+      .clearfix:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cont clearfix">
+      <div class="head">
+        <img
+          src="https://pic.cnblogs.com/avatar/956663/20170925150809.png"
+          alt=""
+        />
+      </div>
+      <div class="txt">　　这里边应该有很多文字的，为了篇幅我就删掉了。</div>
+    </div>
+    <div class="cont cont-m clearfix">
+      <div class="txt">　　这里边应该有很多文字的，为了篇幅我就删掉了。</div>
+      <div class="head">
+        <img
+          src="https://pic.cnblogs.com/avatar/956663/20170925150809.png"
+          alt=""
+        />
+      </div>
+    </div>
+  </body>
+</html>
