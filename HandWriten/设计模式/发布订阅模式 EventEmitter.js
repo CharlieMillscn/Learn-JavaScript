@@ -15,13 +15,14 @@ class EventEmitter {
     // handlers是一个map，用于存储事件与回调之间的对应关系
     this.handlers = {};
   }
-  // on方法用于安装事件监听器，它接受目标事件名和回调函数作为参数
+  // on方法用于安装事件监听器，它接受目标事件名和回调函数作为参数，订阅
   on(eventName, cb) {
     if (!this.handlers[eventName]) {
       this.handlers[eventName] = [];
     }
     this.handlers[eventName].push(cb);
   }
+  // 发布
   emit(eventName, ...args) {
     if (this.handlers[eventName]) {
       this.handlers[eventName].forEach((cb) => {
@@ -33,16 +34,16 @@ class EventEmitter {
 
 let em = new EventEmitter();
 
-function workDay() {
-  console.log("每天工作！");
+function workDay(...args) {
+  console.log("每天工作！" + args);
 }
-function makeMoney() {
-  console.log("赚100万");
+function makeMoney(...args) {
+  console.log("赚100万" + args);
 }
-function sayLove() {
-  console.log("向喜欢的人示爱");
+function sayLove(...args) {
+  console.log("向喜欢的人示爱" + args);
 }
 em.on("money", makeMoney);
 em.on("money", sayLove);
 
-em.emit("money");
+em.emit("money", 1, 2, 3);
