@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html * {
+        padding: 0;
+        margin: 0;
+      }
+
+      /* 重要：设置容器为网格布局，宽度为100% */
+      .layout.grid {
+        display: grid;
+        width: 100%;
+        grid-template-rows: 100px;
+        grid-template-columns: 300px auto 300px;
+      }
+
+      .layout.grid .left {
+        background: red;
+      }
+
+      .layout.grid .center {
+        background: green;
+      }
+
+      .layout.grid .right {
+        background: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="layout grid">
+      <div class="left">我是 left</div>
+      <div class="center">
+        <h1>网格布局解决方案</h1>
+        我是 center
+      </div>
+      <div class="right">我是 right</div>
+    </section>
+  </body>
+</html>

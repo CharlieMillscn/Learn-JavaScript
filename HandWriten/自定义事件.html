@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .test {
+        background-color: red;
+        width: 50px;
+        height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="divA" class="test">A</div>
+    <div id="divB" class="test">B</div>
+    <div id="divC" class="test">C</div>
+  </body>
+  <script>
+    let clickAEvent = new Event("clickA");
+    let divA = document.getElementById("divA");
+    let divB = document.getElementById("divB");
+    let divC = document.getElementById("divC");
+
+    divB.addEventListener("clickA", function (e) {
+      console.log("我是小B，我感觉到了小A");
+      console.log(e.target);
+    });
+
+    divC.addEventListener("clickA", function (e) {
+      console.log("我是小C，我感觉到了小A");
+      console.log(e.target);
+    });
+
+    divA.addEventListener("click", function (e) {
+      console.log("我是小A");
+      divB.dispatchEvent(clickAEvent);
+      divC.dispatchEvent(clickAEvent);
+    });
+  </script>
+</html>
