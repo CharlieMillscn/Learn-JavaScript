@@ -2,28 +2,26 @@
 let checkType = (data) => {
   return Object.prototype.toString.call(data).slice(8, -1);
 };
-checkType({});
 
 let deepClone = (target) => {
-  let targetType = checkType(target);
-  let result;
-  if (targetType === "Object") {
-    result = {};
-  } else if (targetType === "Array") {
-    result = [];
+  const type = checkType(target);
+  let res;
+  if (type === "Object") {
+    res = {};
+  } else if (type === "Array") {
+    res = [];
   } else {
     return target;
   }
   for (let i in target) {
-    let value = target[i];
-    let valueType = checkType(value);
-    if (valueType === "Object" || valueType === "Array") {
-      result[i] = deepClone(value); // 递归
+    const tempType = checkType(target[i]);
+    if (tempType === "Object" || tempType === "Array") {
+      res[i] = deepClone(target[i]);
     } else {
-      result[i] = value;
+      res[i] = target[i];
     }
   }
-  return result;
+  return res;
 };
 // let arr1 = [1, 2, {age: 18}]
 // let arr2 = deepClone(arr1)

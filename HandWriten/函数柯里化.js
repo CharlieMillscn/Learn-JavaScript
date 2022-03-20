@@ -4,10 +4,10 @@
 */
 const curry = (fn, arr = []) => {
   let len = fn.length;
-  return function (...args) {
-    const newArgs = [...args, ...arr];
-    if (len === newArgs.length) {
-      return fn(...newArgs);
+  return function () {
+    const newArgs = [...arguments, ...arr];
+    if (newArgs.length === len) {
+      return fn.apply(this, newArgs);
     } else {
       return curry(fn, newArgs);
     }
@@ -22,5 +22,5 @@ var multi = curry(multiFn);
 
 console.log(multi(2)(3)(4));
 // multi(2, 3, 4);
-// multi(2)(3, 4);
+console.log(multi(2)(3, 4));
 // multi(2, 3)(4);

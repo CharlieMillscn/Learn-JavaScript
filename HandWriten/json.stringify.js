@@ -23,6 +23,13 @@ function jsonStringify(obj) {
 }
 console.log(jsonStringify({ x: 5 })); // "{"x":5}"
 console.log(jsonStringify([1, "false", false])); // "[1,"false",false]"
-console.log(jsonStringify({ b: undefined })); // "{"b":"undefined"}"
+console.log(
+  jsonStringify({
+    b: undefined,
+    a: {
+      c: 5,
+    },
+  })
+); // "{"b":"undefined"}"
 // var json = (new Function('return ' + jsonStr))();
 // return eval('(' + opt + ')');

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>search you want</title>
+    <style>
+      .container {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .bgDiv {
+        position: relative;
+      }
+
+      .search-input-text {
+        border: 1px solid #b6b6b6;
+        width: 495px;
+        background: #fff;
+        height: 33px;
+        line-height: 33px;
+        font-size: 18px;
+        padding: 3px 0 0 7px;
+      }
+
+      .search-input-button {
+        width: 90px;
+        height: 38px;
+        color: #fff;
+        font-size: 16px;
+        letter-spacing: 3px;
+        background: #3385ff;
+        border: 0.5px solid #2d78f4;
+        margin-left: -5px;
+        vertical-align: top;
+        opacity: 0.9;
+      }
+
+      .search-input-button:hover {
+        opacity: 1;
+        box-shadow: 0 1px 1px #333;
+        cursor: pointer;
+      }
+
+      .suggest {
+        width: 502px;
+        position: absolute;
+        top: 38px;
+        border: 1px solid #999;
+        background: #fff;
+        display: none;
+      }
+
+      .suggest ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .suggest ul li {
+        padding: 3px;
+        font-size: 17px;
+        line-height: 25px;
+        cursor: pointer;
+      }
+
+      .suggest ul li:hover {
+        background-color: #e5e5e5;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="bgDiv">
+        <input
+          type="text"
+          class="search-input-text"
+          value=""
+          autofocus
+          placeholder="关键词"
+        />
+        <input
+          type="button"
+          value="搜索一下"
+          class="search-input-button"
+          id="btn"
+        />
+        <div class="suggest">
+          <ul id="search-result"></ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var suggestContainer = document.getElementsByClassName("suggest")[0];
+      var searchInput = document.getElementsByClassName("search-input-text")[0];
+      var searchResult = document.getElementById("search-result");
+      const data = [
+        { title: "哈哈哈", url: "dsfsdgsd" },
+        { title: "哈哈哈1", url: "dsfsdgsdfsdfsd" },
+        { title: "哈哈哈2", url: "dsfvdfsdgsd" },
+        { title: "哈哈哈3", url: "dsfsxcvqw23dgsd" },
+        { title: "嘻嘻嘻", url: "dsfsd的方法糕点房gsd" },
+        { title: "噜噜噜噜", url: "dsf得给对方sdgsd" },
+        { title: "去去去", url: "电饭锅电饭锅dsfsdgsd" },
+        { title: "嘻嘻嘻我", url: "ds刚发送多个fsdgsd" },
+        { title: "如意湖", url: "dsfsdgsd" },
+        { title: "一切顺利", url: "发关掉关掉dsfsdgsd" },
+        { title: "如意园", url: "ds收工时费fsdgsd" },
+      ];
+
+      const debounce = (fn, wait) => {
+        let timer;
+        return function (...args) {
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => {
+            fn.apply(this, args);
+          }, wait);
+        };
+      };
+
+      // 清除建议框内容
+      function clearContent() {
+        var size = searchResult.childNodes.length;
+        for (var i = size - 1; i >= 0; i--) {
+          searchResult.removeChild(searchResult.childNodes[i]);
+        }
+      }
+
+      var timer = null;
+      // 注册输入框键盘抬起事件
+      searchInput.onkeyup = function (e) {
+        suggestContainer.style.display = "block";
+        // 如果输入框内容为空 清除内容且无需跨域请求
+        if (this.value.length === 0) {
+          clearContent();
+          return;
+        }
+        if (this.timer) {
+          clearTimeout(this.timer);
+        }
+        if (e.keyCode !== 40 && e.keyCode !== 38) {
+          // 函数节流优化
+          this.timer = setTimeout(() => {
+            handleSuggestion(this.value);
+          }, 200);
+        }
+      };
+
+      function handleSuggestion(res) {
+        clearContent();
+        const result = data.filter((item) => item.title.includes(res));
+        let contentFragment = document.createDocumentFragment();
+        for (let i = 0; i < result.length; i++) {
+          var liObj = document.createElement("li");
+          liObj.innerHTML = result[i].title;
+          contentFragment.append(liObj);
+        }
+        searchResult.appendChild(contentFragment);
+      }
+
+      function jumpPage() {
+        window.open(
+          `https://www.baidu.com/s?word=${encodeURI(searchInput.value)}`
+        );
+      }
+
+      // 事件委托 点击li标签或者点击搜索按钮跳转到百度搜索页面
+      searchResult.addEventListener(
+        "click",
+        function (e) {
+          var keywords = e.target.innerText;
+          searchInput.value = keywords;
+          jumpPage();
+        },
+        false
+      );
+
+      // 点击页面任何其他地方 搜索结果框消失
+      document.onclick = () => clearContent();
+    </script>
+  </body>
+</html>
