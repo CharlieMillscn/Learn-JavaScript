@@ -4,7 +4,6 @@ const findNearesttargetber = (arr, target) => {
   let r = arr.length - 1;
   // 保证指针最终停留在相邻的两个数,所以这里是判断是否大于1
   while (r - l > 1) {
-    undefined;
     mid = Math.floor((l + r) / 2);
     // 如果目标数比中间小，所以范围在左边
     if (target < arr[mid]) {
@@ -18,4 +17,4 @@ const findNearesttargetber = (arr, target) => {
     ? arr[l]
     : arr[r];
 };
-console.log(findNearesttargetber([1, 6, 9, 10, 19], 18));
+console.log(findNearesttargetber([1, 6, 9, 10, 19], 1));
